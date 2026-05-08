@@ -6,13 +6,13 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: omnicanalidad-backend
+    container_name: omnicanalidad-backend-defonti
     restart: unless-stopped
     environment:
       # Server
-      PORT: 6001
+      PORT: 6004
       NODE_ENV: ${NODE_ENV:-production}
-      BACKEND_URL: ${BACKEND_URL:-http://10.250.0.68:6001}
+      BACKEND_URL: ${BACKEND_URL:-http://10.250.0.68:6004}
 
       # Database - connect to external MySQL service
       DB_HOST: ${DB_HOST}
@@ -67,7 +67,7 @@ services:
       SENDGRID_API_KEY: ${SENDGRID_API_KEY}
 
       # ERP
-      ERP_API_URL: ${ERP_API_URL:-http://10.250.0.68:5019}
+      ERP_API_URL: ${ERP_API_URL:-http://10.250.0.68:5018}
       ERP_API_USERNAME: ${ERP_API_USERNAME}
       ERP_API_PASSWORD: ${ERP_API_PASSWORD}
       ERP_API_DEVICE_UUID: ${ERP_API_DEVICE_UUID}
@@ -78,19 +78,19 @@ services:
       ERP_API_TIMEOUT: ${ERP_API_TIMEOUT:-30000}
 
       # Development
-      FRONTEND_URL: ${FRONTEND_URL:-http://10.250.0.68:6002}
+      FRONTEND_URL: ${FRONTEND_URL:-http://10.250.0.68:6004}
       LOG_LEVEL: ${LOG_LEVEL:-info}
       EXTERNAL_API_KEY: ${EXTERNAL_API_KEY:-dev-external-key-change-in-production}
 
     ports:
-      - "6001:6001"
+      - "6004:6004"
     volumes:
       - backend_uploads:/app/uploads
       - backend_logs:/app/logs
     networks:
       - traefik
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:6001/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:6004/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -115,11 +115,11 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: omnicanalidad-frontend
+    container_name: omnicanalidad-frontend-defonti
     restart: unless-stopped
     command: ["nginx", "-g", "daemon off;"]
     environment:
-      REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:6001/api}
+      REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:6005/api}
       REACT_APP_SHOW_WORKFLOWS: ${REACT_APP_SHOW_WORKFLOWS:-true}
       REACT_APP_SHOW_RULES_BANNER: ${REACT_APP_SHOW_RULES_BANNER:-false}
       REACT_APP_SHOW_CRM: ${REACT_APP_SHOW_CRM:-true}
