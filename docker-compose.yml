@@ -9,6 +9,7 @@ services:
     container_name: omnicanalidad-backend-defonti
     restart: unless-stopped
     environment:
+      TZ: America/Argentina/Buenos_Aires
       # Server
       PORT: 6004
       NODE_ENV: ${NODE_ENV:-production}
