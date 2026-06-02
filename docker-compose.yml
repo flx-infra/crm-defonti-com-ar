@@ -1,21 +1,21 @@
-  version: '3.8'                                                                                                                          
-                                                                                                                                          
-  services:                                                                                                                               
-    backend:                                                                                                                              
-      image: fabreguesm/omnicanalidad-backend:1.0.114                                                                                     
-      build:                                                                                                                              
-        context: ./backend
-        dockerfile: Dockerfile
-      container_name: omnicanalidad-backend-defonti
-      restart: unless-stopped
-      environment:
-        TZ: America/Argentina/Buenos_Aires
-        # Server
-        PORT: 6004
-        NODE_ENV: ${NODE_ENV:-production}
+version: '3.8'                                                            
+                                                                   
+  services:                                                         
+    backend:                                                     
+      image: fabreguesm/omnicanalidad-backend:1.0.114
+      build:                                                        
+        context: ./backend                                                                                                                
+        dockerfile: Dockerfile                                              
+      container_name: omnicanalidad-backend-defonti                                                                                       
+      restart: unless-stopped                                                                                                             
+      environment:                                                                                                                        
+        TZ: America/Argentina/Buenos_Aires                                                                                                
+        # Server                                                                                                                          
+        PORT: 6004                                                                                                                        
+        NODE_ENV: ${NODE_ENV:-production}                                          
         BACKEND_URL: ${BACKEND_URL:-http://10.250.0.68:6004}
 
-        # Database
+        # Database - connect to external MySQL service
         DB_HOST: ${DB_HOST}
         DB_PORT: ${DB_PORT}
         DB_NAME: ${DB_NAME}
@@ -87,8 +87,7 @@
         EXTERNAL_API_KEY: ${EXTERNAL_API_KEY:-dev-external-key-change-in-production}
 
       depends_on:
-        redis:
-          condition: service_healthy
+        - redis
 
       ports:
         - "6004:6004"
@@ -188,8 +187,7 @@
       restart: unless-stopped
       command: ["node", "dist/workers/index.js"]
       depends_on:
-        redis:
-          condition: service_healthy
+        - redis
       networks:
         - traefik
       environment:
