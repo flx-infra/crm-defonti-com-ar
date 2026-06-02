@@ -12,12 +12,12 @@ services:
       TZ: America/Argentina/Buenos_Aires
       PORT: 6004
       NODE_ENV: ${NODE_ENV:-production}
-      BACKEND_URL: ${BACKEND_URL:-http://10.250.0.68:6004}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
+      BACKEND_URL: ${BACKEND_URL}
+      #DB_HOST: ${DB_HOST}
+      #DB_PORT: ${DB_PORT}
+      #DB_NAME: ${DB_NAME}
+      #DB_USER: ${DB_USER}
+      #DB_PASSWORD: ${DB_PASSWORD}
       REDIS_URL: ${REDIS_URL:-redis://redis:6379}
       JWT_SECRET: ${JWT_SECRET:-change-this-secret-in-production}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-24h}
