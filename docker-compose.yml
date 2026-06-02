@@ -156,10 +156,6 @@ services:
     environment:
       TZ: America/Argentina/Buenos_Aires
       NODE_ENV: ${NODE_ENV:-production}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DATABASE_URL: ${DATABASE_URL}
       REDIS_URL: ${REDIS_URL:-redis://redis:6379}
