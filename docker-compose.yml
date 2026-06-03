@@ -136,6 +136,12 @@ services:
     command: ["node", "dist/workers/index.js"]
     networks:
       - traefik
+    healthcheck:
+      test: ["CMD", "node", "-e", "process.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s  
     environment:
       TZ: America/Argentina/Buenos_Aires
       NODE_ENV: ${NODE_ENV:-production}
