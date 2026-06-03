@@ -3,10 +3,6 @@ version: '3.8'
 services:
   backend:
     image: fabreguesm/omnicanalidad-backend:1.0.114
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: omnicanalidad-backend-defonti
     restart: unless-stopped
     environment:
       TZ: America/Argentina/Buenos_Aires
@@ -85,10 +81,6 @@ services:
 
   frontend:
     image: fabreguesm/omnicanalidad-frontend:1.0.114
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: omnicanalidad-frontend-defonti
     restart: unless-stopped
     command: ["nginx", "-g", "daemon off;"]
     environment:
@@ -116,9 +108,10 @@ services:
 
   redis-defonti:
     image: redis:7-alpine
-    container_name: omnicanalidad-redis-defonti
     restart: unless-stopped
     command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
     volumes:
       - redis_data:/data
     networks:
@@ -139,21 +132,15 @@ services:
 
   worker:
     image: fabreguesm/omnicanalidad-backend:1.0.114
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: omnicanalidad-worker-defonti
     restart: unless-stopped
     command: ["node", "dist/workers/index.js"]
-    depends_on:
-      - redis-defonti
     networks:
       - traefik
     environment:
       TZ: America/Argentina/Buenos_Aires
       NODE_ENV: ${NODE_ENV:-production}
       DATABASE_URL: ${DATABASE_URL}
-      REDIS_URL: ${REDIS_URL:-redis://redis-defonti:6379}
+      REDIS_URL: ${REDIS_URL:-redis://10.250.0.68:6379}
       JWT_SECRET: ${JWT_SECRET:-change-this-secret-in-production}
       EMAIL_POLL_INTERVAL_SECONDS: ${EMAIL_POLL_INTERVAL_SECONDS:-120}
       EMAIL_CREDENTIALS_ENCRYPTION_KEY: ${EMAIL_CREDENTIALS_ENCRYPTION_KEY}
