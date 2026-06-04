@@ -88,6 +88,9 @@ services:
       REACT_APP_SHOW_WORKFLOWS: ${REACT_APP_SHOW_WORKFLOWS:-true}
       REACT_APP_SHOW_RULES_BANNER: ${REACT_APP_SHOW_RULES_BANNER:-false}
       REACT_APP_SHOW_CRM: ${REACT_APP_SHOW_CRM:-true}
+      # Upstream interno para que nginx proxypasee /api/admin/queues (Bull Board)
+      # al backend manteniendo mismo origen que el SPA (necesario para el cookie auth).
+      BACKEND_INTERNAL_URL: ${BACKEND_INTERNAL_URL:-http://backend:6004}
     ports:
       - "${FRONTEND_PORT:-6002}:80"
     networks:
